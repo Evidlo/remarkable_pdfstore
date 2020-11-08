@@ -31,6 +31,18 @@
 - *Contents* - (optional) human readable annotation description
 - *Inklist* - array of stroke arrays.  stroke array is alternating x and y coordinates of each point
 
+# Optional Content Groups (layers)
+
+- https://github.com/pikepdf/pikepdf/issues/118
+
+- p228 - OCProperties
+- p222 - Properties
+
+# PDF libs
+
+- mupdf
+- pdfium
+
 # PDF-1.7 Spec
 
 https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf
