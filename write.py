@@ -1,7 +1,9 @@
-# use pymupdf wheel from here: https://github.com/pymupdf/PyMuPDF/issues/709#issuecomment-721686129
+# Evan Widloski - 2020-11-07
+# demonstrating storing pen strokes directly in PDF
 
 import fitz
 
+# name of layer where pen strokes live
 stroke_layer_name = 'remarkable pen'
 
 # create new document
@@ -9,10 +11,11 @@ doc = fitz.open()
 page = doc.newPage()
 page.setRotation(0)
 
+# draw a rectangle and add some text for fun
 r = fitz.Rect(72, 72, 100, 100)
 page.addFreetextAnnot(r, 'foobar')
 
-# ----- write strokes -----
+# ----- write pen strokes -----
 
 # create new optional content group
 pen_ocg_xref = doc.addOCG(stroke_layer_name, config=-1, on=1, intent=None)
@@ -24,26 +27,6 @@ annot = page.addInkAnnot(
     ]
 )
 annot.setOC(pen_ocg_xref)
+print(pen_ocg_xref)
 
 doc.save('out.pdf', deflate=True)
-
-# ----- read strokes -----
-
-doc = fitz.open('out.pdf')
-pages = doc.pages()
-
-# get reference to optional content group containing strokes
-for xref, ocg in doc.getOCGs().items():
-    if ocg['name'] == stroke_layer_name:
-        break
-else:
-    print(f"No layer {stroke_layer_name} found")
-    quit()
-
-# find annotations in optional content group
-for page in pages:
-    for annot in page.annots():
-        if annot.getOC() == xref:
-            print("pen stroke vertices:")
-            print(annot.vertices)
-
