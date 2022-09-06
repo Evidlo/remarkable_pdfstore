@@ -8,11 +8,13 @@ stroke_layer_name = 'remarkable pen'
 
 # ----- read pen strokes -----
 
-doc = fitz.open('out.pdf')
+infile = 'out.pdf'
+print(f"reading from {infile}")
+doc = fitz.open(infile)
 pages = doc.pages()
 
 # get reference to optional content group containing strokes
-for xref, ocg in doc.getOCGs().items():
+for xref, ocg in doc.get_ocgs().items():
     if ocg['name'] == stroke_layer_name:
         break
 else:
